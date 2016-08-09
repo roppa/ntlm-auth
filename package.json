@@ -1,0 +1,26 @@
+{
+  "name": "ntml-auth",
+  "version": "1.0.0",
+  "description": "Test app for ntml and ldap authentication/authorisation",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Mark Robson <mark.o.robson@gmail.com> (http://digioli.co.uk)",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3",
+    "request": "^2.74.0",
+    "supertest": "^2.0.0",
+    "supertest-session": "^2.0.1"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "express-ntlm": "^2.1.4",
+    "jwt-simple": "^0.5.0",
+    "ldapjs": "^1.0.0"
+  }
+}
