@@ -6,5 +6,7 @@ process.env.DOMAIN_NAME = 'TESTDOMAIN';
 process.env.DOMAIN_CONTROLLER = 'ldap://0.0.0.0:1389';
 
 let app = require('.');
+let middlewareConfig = require('./config');
+require('./server/middleware')(app, middlewareConfig);
 
 app.listen(process.env.PORT);

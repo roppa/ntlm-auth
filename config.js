@@ -9,22 +9,10 @@
  * @returns {array} to be iterated over in middleware
  */
 let middlewareConfig = [
-  validateCookie,
-  //require('./server/ntlm'), //attaches an object to req
+  require('./server/cookie-validator'),
+  require('./server/ntlm'),
   require('./server/ldap'),
   require('./server/jwt')
 ];
-
-function validateCookie (req, res, next) {
-  if (req.cookies.auth) {
-  //   //authenticate cookie here
-  //   //if invalid cookie
-  //     //res.clearCookie('auth');
-  //     //next();
-    return res.status(200).end();
-  }
-
-  next();
-}
 
 module.exports = middlewareConfig;

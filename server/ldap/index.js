@@ -15,8 +15,10 @@ let ldapMiddleware = (function () {
 
   return (req, res, next) => {
 
+    res.header('test', 'test');
+
     if (!req.ntlm || !req.ntlm.UserName) {
-      return res.status(401).end();
+      return res.status(403).end();
     }
 
     let user = {
