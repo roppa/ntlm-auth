@@ -13,6 +13,10 @@ let ldapMiddleware = (function () {
     url: process.env.DOMAIN_CONTROLLER
   });
 
+  ldapClient.bind(process.env.LDAP_ADMIN, process.env.LDAP_SECRET, error => {
+    console.log(error);
+  });
+
   return (req, res, next) => {
 
     res.header('test', 'test');
