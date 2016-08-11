@@ -11,7 +11,7 @@ server.bind('cn=root', (req, res, next) => {
   return next();
 });
 
-server.search('o=test', function(req, res, next) {
+server.search('o=test', (req, res, next) => {
   let obj = {
     dn: req.dn.toString(),
     attributes: {

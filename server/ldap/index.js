@@ -10,16 +10,16 @@ let ldap = require('ldapjs');
 let ldapMiddleware = (function () {
 
   let ldapClient = ldap.createClient({
-    url: process.env.DOMAIN_CONTROLLER
+    url: process.env.DIRECTORY_SYSTEM_AGENT
   });
 
   ldapClient.bind(process.env.LDAP_ADMIN, process.env.LDAP_SECRET, error => {
-    console.log(error);
+    if (error) {
+      console.log(error);
+    }
   });
 
   return (req, res, next) => {
-
-    res.header('test', 'test');
 
     if (!req.ntlm || !req.ntlm.UserName) {
       return res.status(403).end();
@@ -31,6 +31,9 @@ let ldapMiddleware = (function () {
 
     //set attribute on request for next middleware
     req.user = user;
+
+    //get user credentials
+    //`(&(${process.env.LDAP_ACCOUNT_NAME}=${user.username})(memberOf=${process.env.LDAP_ACCESS_GROUP}))`;
 
     next();
 

@@ -10,7 +10,7 @@ let ntlmMiddleware = ntlm({
   //   console.log(Array.prototype.slice.call(arguments)[0]);
   // },
   domain: process.env.DOMAIN_NAME,
-  domaincontroller: process.env.DOMAIN_CONTROLLER
+  domaincontroller: process.env.DIRECTORY_SYSTEM_AGENT
 });
 
 module.exports = ntlmMiddleware;
