@@ -42,10 +42,11 @@ describe('LDAP middleware', () => {
 
       middlewareDecorator(app, [(req, res, next) => {
         req.ntlm = {
-          UserName: 'bob'
+          UserName: 'Bob Johnson'
         };
         next();
       }, ldapMiddleware, (req, res, next) => {
+        res.cookie('ldaptest', req.user);
         res.end();
       }]);
 
@@ -56,6 +57,11 @@ describe('LDAP middleware', () => {
           if (error) {
             throw error;
           }
+          let rawCookieString = decodeURIComponent(res.headers['set-cookie'][0]);
+          let cookieObject = JSON.parse(rawCookieString.substring(
+            rawCookieString.indexOf('{'),
+            rawCookieString.lastIndexOf('}') + 1));
+          expect(cookieObject.username).to.eql('Bob Johnson');
           done();
         });
 

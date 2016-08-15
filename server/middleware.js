@@ -29,11 +29,8 @@ let middleware = (app, middlewareConfig) => {
    */
   app.use((err, req, res, next) => {
     res.status(err.status || 500);
-    res.render('error', {
-      status: res.statusCode,
-      message: err.message,
-      error: err
-    });
+    console.log(err);
+    res.end();
   });
 
 };

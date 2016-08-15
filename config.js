@@ -9,10 +9,10 @@
  * @returns {array} to be iterated over in middleware
  */
 let middlewareConfig = [
-  require('./server/cookie-validator'),
-  require('./server/ntlm'),
-  require('./server/ldap'),
-  require('./server/jwt')
+  require('./server/cookie-validator'), //validate cookie (optional)
+  require('./server/ntlm'), //use ntlm
+  require('./server/ldap'), //expect res.ntlm TODO: use middelware to set res.user
+  require('./server/jwt') //terminate 403 or 200 with jwt cookie
 ];
 
 module.exports = middlewareConfig;

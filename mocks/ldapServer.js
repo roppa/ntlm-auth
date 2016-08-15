@@ -3,6 +3,10 @@
 let ldap = require('ldapjs');
 let server = ldap.createServer();
 
+server.add('o=example', (req, res, next) => {
+  next();
+});
+
 server.bind('cn=root', (req, res, next) => {
   if (req.dn.toString() !== 'cn=root' || req.credentials !== 'secret') {
     return next(new ldap.InvalidCredentialsError());
@@ -11,12 +15,13 @@ server.bind('cn=root', (req, res, next) => {
   return next();
 });
 
-server.search('o=test', (req, res, next) => {
-  let obj = {
+server.search('o=example', (req, res, next) => {
+
+  var obj = {
     dn: req.dn.toString(),
-    attributes: {
-      objectclass: ['organization', 'top'],
-      o: 'test'
+    attributes:   {
+      cn: 'Bob Johnson',
+      userPassword: 'rubbishpassword'
     }
   };
 
