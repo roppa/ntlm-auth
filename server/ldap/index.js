@@ -1,7 +1,7 @@
 'use strict';
 
 let ldap = require('ldapjs');
-
+let ldapUtils = require('./ldapLib');
 /**
  * Connects to LDAP server and runs a callback function as the middleware handler
  * @param {function} callback function, must be in middleware format
@@ -13,11 +13,8 @@ let ldapMiddleware = (req, res, next) => {
     return res.status(403).end();
   }
 
-  let client = ldap.createClient({
-    url: process.env.DIRECTORY_SYSTEM_AGENT
-  });
-
-  client.bind(process.env.LDAP_ADMIN, process.env.LDAP_SECRET, error => {
+  let client = ldapUtils.getClient(process.env.DIRECTORY_SYSTEM_AGENT);
+  ldapUtils.bindClient(client, process.env.LDAP_ADMIN, process.env.LDAP_SECRET, error => {
     if (error) {
       console.log('Error:', error);
       res.status(500).end();
