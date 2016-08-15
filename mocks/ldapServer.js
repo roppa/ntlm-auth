@@ -19,9 +19,8 @@ server.search('o=example', (req, res, next) => {
 
   var obj = {
     dn: req.dn.toString(),
-    attributes:   {
-      cn: 'Bob Johnson',
-      userPassword: 'rubbishpassword'
+    attributes: {
+      cn: req.dn.rdns[0].attrs.cn.value
     }
   };
 

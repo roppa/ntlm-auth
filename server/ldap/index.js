@@ -9,20 +9,20 @@ let ldap = require('ldapjs');
 
 let ldapMiddleware = (req, res, next) => {
 
+  if (!req.ntlm || !req.ntlm.UserName) {
+    return res.status(403).end();
+  }
+
   let client = ldap.createClient({
     url: process.env.DIRECTORY_SYSTEM_AGENT
   });
 
   client.bind(process.env.LDAP_ADMIN, process.env.LDAP_SECRET, error => {
     if (error) {
-      console.log(error);
+      console.log('Error:', error);
       res.status(500).end();
     }
   });
-
-  if (!req.ntlm || !req.ntlm.UserName) {
-    return res.status(403).end();
-  }
 
   let opts = {
     //filter: '(&(cn=Bob Johnson)(userPassword=rubbishpassword))',
@@ -45,11 +45,16 @@ let ldapMiddleware = (req, res, next) => {
       req.user.password = entry.object.userPassword;
     });
 
+    res.on('searchReference', referral => {
+      console.log('referral: ' + referral.uris.join());
+    });
+
     result.on('error', error => {
+      console.log('Error: ', error);
       res.status(500).end();
     });
 
-    result.on('end', (result) => {
+    result.on('end', result => {
       next();
     });
 

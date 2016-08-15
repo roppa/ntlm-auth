@@ -18,9 +18,33 @@ describe('LDAP middleware', () => {
 
   describe('invalid credentials', () => {
 
-    it('should return 403 for invalid cretentials', done => {
+    it('should return 403 for no credentials', done => {
 
       middlewareDecorator(app, [ldapMiddleware]);
+
+      request(app)
+        .get('/')
+        .expect(403)
+        .end((error, res) => {
+          if (error) {
+            throw error;
+          }
+          done();
+        });
+
+    });
+
+    it('should return 403 for invalid credentials', done => {
+
+      middlewareDecorator(app, [(req, res, next) => {
+        req.ntlm = {
+          Userame: 'Paul Thompson'
+        };
+        next();
+      }, ldapMiddleware, (req, res, next) => {
+        res.cookie('ldaptest', req.user);
+        res.end();
+      }]);
 
       request(app)
         .get('/')
@@ -38,7 +62,7 @@ describe('LDAP middleware', () => {
 
   describe('valid credentials', () => {
 
-    it('should return 200 for valid cretentials', done => {
+    it('should return 200 for valid credentials', done => {
 
       middlewareDecorator(app, [(req, res, next) => {
         req.ntlm = {
